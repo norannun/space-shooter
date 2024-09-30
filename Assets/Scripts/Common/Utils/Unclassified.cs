@@ -17,7 +17,22 @@ public class Unclassified
         Vector2[] values = new Vector2[hashsetLength];
         hashset.CopyTo(values, 0);
 
-        return values[UnityEngine.Random.Range(0, hashsetLength - 1)];
+        return values[UnityEngine.Random.Range(0, hashsetLength)];
+    }
+
+    public static TKey GetRandomKey<TKey, TValue>(Dictionary<TKey, TValue> dict)
+    {
+        int dictLength = dict.Count;
+
+        if (dictLength == 0)
+        {
+            return default;
+        }
+
+        TKey[] values = new TKey[dictLength];
+        dict.Keys.CopyTo(values, 0);
+
+        return values[UnityEngine.Random.Range(0, dictLength)];
     }
 
     public static int GetActiveChildrenCount(GameObject obj)

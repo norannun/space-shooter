@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -19,7 +18,7 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    /// Events
+    // Events
     public delegate void LevelEndHandle();
     public static event LevelEndHandle OnLevelEnd;
 

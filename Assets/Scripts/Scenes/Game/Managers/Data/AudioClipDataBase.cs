@@ -7,7 +7,7 @@ public class AudioClipEntry
     public AudioClip audioClip;
 }
 
-[CreateAssetMenu(fileName = "AudioClipDataBase", menuName = "Audio/AudioClipDataBase")]
+[CreateAssetMenu(fileName = "AudioClipDataBase", menuName = "Data/AudioClipDataBase")]
 public class AudioClipDataBase : ScriptableObject
 {
     public AudioClipEntry[] entries;
