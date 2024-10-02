@@ -118,7 +118,7 @@ public class CellCluster
 public class SpawnPositionManager_ : MonoBehaviour
 {
     public static SpawnPositionManager_ Instance { get; private set; }
-    [SerializeField] private SpawnManagerConfig config;
+    [SerializeField] private SpawnPositionManagerConfig config;
 
     private int gridWidth;
     private int gridHeight;
@@ -149,8 +149,8 @@ public class SpawnPositionManager_ : MonoBehaviour
 
     private void InitializeGrid()
     {
-        gridWidth = config.gridX;
-        gridHeight = config.gridY;
+        gridWidth = config.gridInitialSizeX;
+        gridHeight = config.gridInitialSizeY;
 
         float screenWidth = GlobalValuesManager.Instance.RightBoundary - GlobalValuesManager.Instance.LeftBoundary;
         CellSize = screenWidth / gridWidth;
@@ -182,7 +182,7 @@ public class SpawnPositionManager_ : MonoBehaviour
         return null;
     }
 
-    public Vector2 GetPosition(SpawnableObject obj)
+    public Vector2 GetPosition<T>(T obj) where T : SpawnableObject
     {
         CellCluster cluster = FindAvailableCluster(obj.Size);
         if (cluster != null)
@@ -204,16 +204,16 @@ public class SpawnPositionManager_ : MonoBehaviour
         int clusterHeight = (int) Mathf.Round(objSize.y / (2 * CellSize));
 
         List<Vector2Int> positions = new List<Vector2Int>();
-        for (int y = 0; y < currentGridHeight; y++)
+        for (int y = 0; y < currentGridHeight; y++)  // O(n^2), n - grid size
         {
             for (int x = 0; x < gridWidth; x++)
             {
                 positions.Add(new Vector2Int(x, y));
             }
         }
-        Shuffle(positions);
+        Shuffle(positions);  // O(n), n - grid size
 
-        foreach (var pos in positions)
+        foreach (var pos in positions)  // O(n), n - grid size
         {
             GridCell cell = grid[pos.y, pos.x];
             if (IsSpaceAvailable(cell, clusterWidth, clusterHeight))
@@ -222,14 +222,15 @@ public class SpawnPositionManager_ : MonoBehaviour
             }
         }
 
+        // Problem
         ExpandGrid(clusterHeight);
         return FindAvailableCluster(objSize);
     }
 
-    private IEnumerator OccupationSequnce(CellCluster cluster, float speed)  // Notion TO-DOs
+    private IEnumerator OccupationSequnce(CellCluster cluster, float speed)
     {
         float delay = CellSize / speed;
-        int pointerY = cluster.Height; // Only when cluster.IndexY == 0
+        int pointerY = cluster.Height;  // Only when cluster.IndexY == 0
 
         bool notDone = true;
         while (notDone)
@@ -254,7 +255,7 @@ public class SpawnPositionManager_ : MonoBehaviour
         }
     }
 
-    private void Shuffle(List<Vector2Int> list)
+    private void Shuffle(List<Vector2Int> list)  // O(n), n - grid size
     {
         for (int i = list.Count - 1; i > 0; i--)
         {
@@ -310,6 +311,20 @@ public class SpawnPositionManager_ : MonoBehaviour
         currentGridHeight = newHeight;
     }
 
+    private void ContractGrid(int heightToReduce)
+    {
+        int newHeight = currentGridHeight - heightToReduce;
+        GridCell[,] newGrid = new GridCell[newHeight, gridWidth];
+
+        for (int y = 0; y < newHeight; y++)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                newGrid[y, x] = grid[y, x];
+            }
+        }
+    }
+
     private void OnDrawGizmos()
     {
         if (grid == null) return;
@@ -327,3 +342,10 @@ public class SpawnPositionManager_ : MonoBehaviour
     }
 }
 
+
+[CreateAssetMenu(fileName = "SpawnPositionManager Config", menuName = "Configs/Spawn System/SpawnPositionManager Config")]
+public class SpawnPositionManagerConfig : ScriptableObject
+{
+    public int gridInitialSizeX;
+    public int gridInitialSizeY;
+}

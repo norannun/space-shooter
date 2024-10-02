@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f13e7764fdcd784cb45ce1dc107aeba, type: 3}
-  m_Name: SpawnManagerConfig
-  m_EditorClassIdentifier: 
-  gridX: 20
-  gridY: 15
+  m_Script: {fileID: 0}
+  m_Name: TestPool Config
+  m_EditorClassIdentifier: Assembly-CSharp::TestPoolConfig
+  prefab: {fileID: 1786350502832277584, guid: ab4fe66abfb9680469bac14a75d793be, type: 3}
+  initialSize: 5
+  expansionSize: 15

@@ -51,4 +51,16 @@ public class Unclassified
 
         return count;
     }
+
+    public static void NullCheckComponent<T>(T comp)
+    {
+        if (comp != null)
+        {
+            return;
+        }
+        else
+        {
+            Debug.LogError("Component is NOT LOADED");
+        }
+    }
 }

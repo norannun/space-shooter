@@ -14,7 +14,6 @@ public class EnemyPool : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
 
             _pool = new ObjectPool<Enemy>(_prefab, _initialSize, _expansionSize, transform);
         }

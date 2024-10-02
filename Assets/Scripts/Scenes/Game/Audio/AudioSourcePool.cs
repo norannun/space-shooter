@@ -18,7 +18,6 @@ public class AudioSourcePool : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
 
             Expand(_initialSize);
 
@@ -93,4 +92,18 @@ public class AudioSourcePool : MonoBehaviour
 
         StartCoroutine(Return(agent, source.clip.length));
     }
+}
+
+
+[System.Serializable]
+public class AudioClipEntry
+{
+    public string clipName;
+    public AudioClip audioClip;
+}
+
+[CreateAssetMenu(fileName = "AudioClip Data Base", menuName = "Configs/Audio/AudioClip Data Base")]
+public class AudioClipDataBase : ScriptableObject
+{
+    public AudioClipEntry[] entries;
 }

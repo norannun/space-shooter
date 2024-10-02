@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: TestPool2 Config
+  m_EditorClassIdentifier: Assembly-CSharp::TestPool2Config
+  prefab: {fileID: 2809426237716298939, guid: 45bb992061e45ca4888fb8051183d42f, type: 3}
+  initialSize: 15
+  expansionSize: 10

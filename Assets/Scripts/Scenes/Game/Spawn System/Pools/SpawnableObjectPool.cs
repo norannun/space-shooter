@@ -1,20 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> where T : MonoBehaviour
+public class SpawnableObjectPool<T> where T : SpawnableObject
 {
-    private Queue<T> _pool = new Queue<T>();
     private GameObject _prefab;
     private Transform _parent;
     private int _expansionSize;
 
-    public ObjectPool(GameObject prefab, int initialSize, int expansionSize, Transform parent = null)
-    {
-        _prefab = prefab;
-        _parent = parent;
-        _expansionSize = expansionSize;
+    private Queue<T> _pool = new Queue<T>();
 
-        Expand(initialSize);
+    public SpawnableObjectPool(SpawnableObjectPoolConfig config, Transform parent)
+    {
+        Initialize(config, parent);
     }
 
     private T Expand(int toAdd)
@@ -23,16 +20,15 @@ public class ObjectPool<T> where T : MonoBehaviour
 
         for (int i = 0; i < toAdd; i++)
         {
-            GameObject obj = GameObject.Instantiate(_prefab, _parent);
+            GameObject obj = GameObject.Instantiate(_prefab, _parent.transform);
             T comp = obj.GetComponent<T>();
             if (comp == null)
             {
                 Debug.LogError($"ObjectPool: comp is NULL");
             }
 
-            obj.SetActive(false);
+            // SpawnableObject deactivates itself during initialization
             _pool.Enqueue(comp);
-
             if (i == toAdd - 1)
             {
                 tmp = comp;
@@ -40,6 +36,15 @@ public class ObjectPool<T> where T : MonoBehaviour
         }
 
         return tmp;
+    }
+
+    private void Initialize<D>(D config, Transform parent) where D : SpawnableObjectPoolConfig
+    {
+        _prefab = config.prefab;
+        _parent = parent;
+        _expansionSize = config.expansionSize;
+
+        Expand(config.initialSize);
     }
 
     public T Get()
@@ -55,13 +60,20 @@ public class ObjectPool<T> where T : MonoBehaviour
             comp = Expand(_expansionSize);
         }
 
-        comp.gameObject.SetActive(true);
+        comp.Activate();
         return comp;
     }
 
     public void Return(T comp)
     {
-        comp.gameObject.SetActive(false);
+        comp.Deactivate();
         _pool.Enqueue(comp);
     }
+}
+
+public class SpawnableObjectPoolConfig : ScriptableObject
+{
+    public GameObject prefab;
+    public int initialSize;
+    public int expansionSize;
 }
