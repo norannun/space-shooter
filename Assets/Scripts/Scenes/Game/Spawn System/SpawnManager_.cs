@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager_ : MonoBehaviour
@@ -21,11 +20,6 @@ public class SpawnManager_ : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        StartCoroutine(Test2Spawn(testPool2));
-    }
-
     private void Update()
     {
         TestSpawn(testPool);
@@ -36,21 +30,15 @@ public class SpawnManager_ : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             TestObject obj = testPool.GetObject();
-            Vector2 positon = SpawnPositionManager_.Instance.GetPosition(obj);
+            Vector2 positon = SpawnPositionManager_.Instance.GetRandomPosition(obj);
             obj.transform.position = positon;
         }
-    }
-
-    private IEnumerator Test2Spawn(TestPool2 pool)
-    {
-        while (true)
+        
+        if (Input.GetKeyDown(KeyCode.J))
         {
             TestObject2 obj = testPool2.GetObject();
-            Vector2 position = SpawnPositionManager_.Instance.GetPosition(obj);
-            obj.transform.position = position;
-
-
-            yield return new WaitForSeconds(3.5f);
+            Vector2 positon = SpawnPositionManager_.Instance.GetRandomPosition(obj);
+            obj.transform.position = positon;
         }
     }
 }

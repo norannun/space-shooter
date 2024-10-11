@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: TestPool2 Config
   m_EditorClassIdentifier: Assembly-CSharp::TestPool2Config
-  prefab: {fileID: 2809426237716298939, guid: 45bb992061e45ca4888fb8051183d42f, type: 3}
-  initialSize: 15
-  expansionSize: 10
+  prefab: {fileID: 5735090695388529358, guid: 45bb992061e45ca4888fb8051183d42f, type: 3}
+  initialSize: 6
+  expansionSize: 14

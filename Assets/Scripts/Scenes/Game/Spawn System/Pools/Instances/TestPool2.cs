@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TestPool2 : MonoBehaviour
@@ -22,6 +20,7 @@ public class TestPool2 : MonoBehaviour
         _pool.Return(comp);
     }
 }
+
 
 [CreateAssetMenu(fileName = "TestPool2 Config", menuName = "Configs/Spawn System/Pools/TestPool2 Config")]
 public class TestPool2Config : SpawnableObjectPoolConfig

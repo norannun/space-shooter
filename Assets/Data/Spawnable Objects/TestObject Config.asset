@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: TestObject Config
   m_EditorClassIdentifier: Assembly-CSharp::TestObjectConfig
-  speed: 4
+  objectName: Test
+  speedY: 4
+  speedXRatio: 0.25
+  mass: 1

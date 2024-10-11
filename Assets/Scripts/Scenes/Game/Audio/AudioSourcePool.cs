@@ -73,7 +73,7 @@ public class AudioSourcePool : MonoBehaviour
         return obj;
     }
 
-    private IEnumerator Return(GameObject obj, float delay)  // probably IEnumerator
+    private IEnumerator Return(GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
 
@@ -102,7 +102,7 @@ public class AudioClipEntry
     public AudioClip audioClip;
 }
 
-[CreateAssetMenu(fileName = "AudioClip Data Base", menuName = "Configs/Audio/AudioClip Data Base")]
+[CreateAssetMenu(fileName = "AudioClip Database", menuName = "Configs/Audio/AudioClip Database")]
 public class AudioClipDataBase : ScriptableObject
 {
     public AudioClipEntry[] entries;

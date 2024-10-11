@@ -182,13 +182,13 @@ public class SpawnPositionManager_ : MonoBehaviour
         return null;
     }
 
-    public Vector2 GetPosition<T>(T obj) where T : SpawnableObject
+    public Vector2 GetRandomPosition<T>(T obj) where T : SpawnableObject
     {
         CellCluster cluster = FindAvailableCluster(obj.Size);
         if (cluster != null)
         {
             cluster.OccupyEntire(grid);
-            StartCoroutine(OccupationSequnce(cluster, obj.Speed));
+            StartCoroutine(OccupationSequnce(cluster, obj.SpeedY));
             return cluster.Cell.Position;
         }
         else

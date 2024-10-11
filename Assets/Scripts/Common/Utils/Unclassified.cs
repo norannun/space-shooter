@@ -54,11 +54,7 @@ public class Unclassified
 
     public static void NullCheckComponent<T>(T comp)
     {
-        if (comp != null)
-        {
-            return;
-        }
-        else
+        if (comp == null)
         {
             Debug.LogError("Component is NOT LOADED");
         }
