@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: Player Config
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
+  health: 100
+  speed: 5.13
+  collisionDamage: 100
+  startingPosition: {x: 0, y: -3}
+  fireRate: 0.15
+  projectileOffsetY: 1.044
+  projectileOffsetX: 0
+  scoreLow: 5
+  scoreHigh: 21
+  novaShot: {fileID: 5548956018157269868, guid: 840ec6e5f50eaff49b1b847dc808fe37, type: 3}

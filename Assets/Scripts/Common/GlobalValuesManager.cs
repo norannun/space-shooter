@@ -11,7 +11,7 @@ public class GlobalValuesManager : MonoBehaviour
     public float ScreenWidth { get; private set; }
     public Vector2 BadPosiiton { get; private set; } = new Vector2(54, 67);
     public string highestScoreKey = "highest score";
-
+    public string projectileAudioName = "Laser Shot";
 
     public enum GameState { On, Over };
     public GameState state = GameState.On;

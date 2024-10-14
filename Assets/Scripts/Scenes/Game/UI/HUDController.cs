@@ -27,10 +27,6 @@ public class HUDController : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _gameOverText;
     [SerializeField]
-    private Image _liveImg;
-    [SerializeField]
-    private Sprite[] _liveSprites;
-    [SerializeField]
     private float _flickeringRate = 0.5f;
 
     void Start()
@@ -46,11 +42,6 @@ public class HUDController : MonoBehaviour
     public void UpdateLevel(int level)
     {
         _levelText.text = level.ToString();
-    }
-
-    public void UpdateLives(int currentLives)
-    {
-        _liveImg.sprite = _liveSprites[currentLives];
     }
 
     public void GameOverSequence()

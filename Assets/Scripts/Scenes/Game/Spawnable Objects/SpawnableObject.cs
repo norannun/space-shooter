@@ -5,9 +5,14 @@ using UnityEngine;
 public abstract class SpawnableObject : MonoBehaviour
 {
     // Configuration
-    public string Name { get; protected set; }
+    public static string Name { get; protected set; }
+    public int Health { get; protected set; }
     public float SpeedY { get; protected set; }
     public float Mass { get; protected set; }
+    public float FireRate { get; protected set; }
+    public float ProjectileOffsetY { get; protected set; }
+    public int ProjectileOffsetX { get; protected set; }
+    public int CollisionDamage { get; protected set; }
 
     // Current state
     public float CurrentSpeedY { get; private set; }
@@ -132,8 +137,13 @@ public abstract class SpawnableObject : MonoBehaviour
         _boxCollider2D.isTrigger = true;
 
         Name = config.objectName;
+        Health = config.health;
         SpeedY = config.speedY;
         Mass = config.mass;
+        FireRate = config.fireRate;
+        ProjectileOffsetX = config.projectileOffsetX;
+        ProjectileOffsetY = config.projectileOffsetY;
+        CollisionDamage = config.collisionDamage;
 
         CurrentSpeedY = SpeedY;
         CurrentMass = Mass;
@@ -165,12 +175,31 @@ public abstract class SpawnableObject : MonoBehaviour
         transform.Translate(Vector2.down * Time.deltaTime * CurrentSpeedY);
     }
 
+    protected abstract void ReceiveDamage(int damage);
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        SpawnableObject otherObject = other.GetComponent<SpawnableObject>();  // Could it be fixed?
-        if (otherObject != null)
+        if (other.tag == "Spawnable Object")
         {
-            HandleCollision(otherObject);
+            SpawnableObject spawnableObject = other.gameObject.GetComponent<SpawnableObject>();
+            Unclassified.NullCheckComponent(spawnableObject);
+
+            HandleCollision(spawnableObject);
+        }
+        if (other.tag == "Player")
+        {
+            Player player = other.gameObject.GetComponent<Player>();
+            Unclassified.NullCheckComponent(player);
+
+            player.ReceiveDamage(CollisionDamage);
+            ReceiveDamage(player.CollisionDamage);
+        }
+        if (other.tag == "Projectile")
+        {
+            Projectile projectile = other.GetComponent<Projectile>();
+            Unclassified.NullCheckComponent(projectile);
+
+            ReceiveDamage(projectile.Damage);
         }
     }
 
@@ -222,8 +251,12 @@ public abstract class SpawnableObject : MonoBehaviour
 
 public abstract class SpawnableObjectConfig : ScriptableObject
 {
-    public static string tag = "spawnable_object";
     public string objectName;
+    public int health;
     public float speedY;
     public int mass;
+    public float fireRate;
+    public float projectileOffsetY;
+    public int projectileOffsetX;
+    public int collisionDamage;
 }

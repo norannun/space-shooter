@@ -14,6 +14,16 @@ public class TestObject : SpawnableObject
     {
         base.Initialize(config);
     }
+
+    protected override void ReceiveDamage(int damage)
+    {
+        Health -= damage;
+
+        if (Health < 1)
+        {
+            TestPool.Instance.ReturnObject(this);
+        }
+    }
 }
 
 

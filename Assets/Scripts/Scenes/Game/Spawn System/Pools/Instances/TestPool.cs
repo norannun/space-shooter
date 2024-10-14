@@ -2,12 +2,24 @@ using UnityEngine;
 
 public class TestPool : MonoBehaviour
 {
+    public static TestPool Instance { get; private set; }
+
     [SerializeField] private TestPoolConfig config;
     private SpawnableObjectPool<TestObject> _pool;
 
     private void Awake()
     {
-        _pool = new SpawnableObjectPool<TestObject>(config, transform);
+        if (Instance == null)
+        {
+            Instance = this;
+
+            _pool = new SpawnableObjectPool<TestObject>(config, transform);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     public TestObject GetObject()
@@ -22,7 +34,7 @@ public class TestPool : MonoBehaviour
 }
 
 
-[CreateAssetMenu(fileName="TestPool Config", menuName="Configs/Spawn System/Pools/TestPool Config")]
+[CreateAssetMenu(fileName="TestPool Config", menuName="Configs/Spawn System/Pools/TestPool")]
 public class TestPoolConfig : SpawnableObjectPoolConfig
 {
 

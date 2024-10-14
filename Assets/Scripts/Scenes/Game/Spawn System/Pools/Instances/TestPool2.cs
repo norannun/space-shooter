@@ -2,12 +2,23 @@ using UnityEngine;
 
 public class TestPool2 : MonoBehaviour
 {
+    public static TestPool2 Instance { get; private set; }
+
     [SerializeField] private TestPool2Config config;
     private SpawnableObjectPool<TestObject2> _pool;
 
     private void Awake()
     {
-        _pool = new SpawnableObjectPool<TestObject2>(config, transform);
+        if (Instance == null)
+        {
+            Instance = this;
+
+            _pool = new SpawnableObjectPool<TestObject2>(config, transform);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public TestObject2 GetObject()
