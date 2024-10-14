@@ -9,6 +9,7 @@ TagManager:
   - Triple Shot
   - Speed
   - Shield
+  - Spawnable Object
   layers:
   - Default
   - TransparentFX

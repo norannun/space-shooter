@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: SpawnPositionManager Config
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPositionManagerConfig
-  gridInitialSizeX: 20
-  gridInitialSizeY: 25
+  gridInitialSizeX: 15
+  gridInitialSizeY: 40

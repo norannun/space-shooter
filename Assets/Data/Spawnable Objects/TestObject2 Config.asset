@@ -14,5 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TestObject2Config
   objectName: Test 2
   speedY: 6
-  speedXRatio: 0.45
-  mass: 2
+  mass: 1

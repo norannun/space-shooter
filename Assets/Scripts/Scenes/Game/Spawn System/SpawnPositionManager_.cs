@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,8 +48,8 @@ public class CellCluster
     {
         Cell = cell;
         this.cellSize = cellSize;
-        Width = (int) Mathf.Round(objSize.x / (2 * cellSize));
-        Height = (int) Mathf.Round(objSize.y / (2 * cellSize));
+        Width = (int)Mathf.Round(objSize.x / (2 * cellSize));
+        Height = (int)Mathf.Round(objSize.y / (2 * cellSize));
     }
 
     public void SetCell(GridCell cell)
@@ -200,8 +199,8 @@ public class SpawnPositionManager_ : MonoBehaviour
 
     private CellCluster FindAvailableCluster(Vector2 objSize)
     {
-        int clusterWidth = (int) Mathf.Round(objSize.x / (2 * CellSize));
-        int clusterHeight = (int) Mathf.Round(objSize.y / (2 * CellSize));
+        int clusterWidth = (int)Mathf.Round(objSize.x / (2 * CellSize));
+        int clusterHeight = (int)Mathf.Round(objSize.y / (2 * CellSize));
 
         List<Vector2Int> positions = new List<Vector2Int>();
         for (int y = 0; y < currentGridHeight; y++)  // O(n^2), n - grid size

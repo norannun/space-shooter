@@ -10,8 +10,8 @@ public abstract class SpawnableObject : MonoBehaviour
     public float Mass { get; protected set; }
 
     // Current state
-    private float _currentSpeedY;
-    private float _currentMass;
+    public float CurrentSpeedY { get; private set; }
+    public float CurrentMass { get; private set; }
 
     // Constants
     public Vector2 Size { get; protected set; }
@@ -19,9 +19,111 @@ public abstract class SpawnableObject : MonoBehaviour
     // Complonents
     private BoxCollider2D _boxCollider2D;
 
-    // Current collisions list
-    private List<SpawnableObject> upperCollisions = new List<SpawnableObject>();
-    private List<SpawnableObject> lowerCollisions = new List<SpawnableObject>();
+    // Collisions
+    private SpawnableObject upperCollision;
+    private SpawnableObject lowerCollision;
+
+    public SpawnableObject UpperCollision
+    {
+        get { return upperCollision; }
+        set
+        {
+            // Add collision
+            if (upperCollision == null && value != null)
+            {
+                upperCollision = value;
+
+                if (value.CurrentMass >= CurrentMass)
+                {
+                    CurrentMass = value.CurrentMass;
+                    CurrentSpeedY = value.CurrentSpeedY;
+                }
+
+                if (lowerCollision != null)
+                {
+                    lowerCollision.UpperCollision = this;
+                }
+            }
+
+            // Remove collision
+            if (upperCollision != null && value == null)
+            {
+                upperCollision = null;
+
+                if (lowerCollision != null)
+                {
+                    if (lowerCollision.CurrentMass >= CurrentMass)
+                    {
+                        CurrentMass = lowerCollision.CurrentMass;
+                        CurrentSpeedY = lowerCollision.CurrentSpeedY;
+                    }
+                    else
+                    {
+                        CurrentMass = Mass;
+                        CurrentSpeedY = SpeedY;
+                    }
+
+                    lowerCollision.UpperCollision = this;
+                }
+                else
+                {
+                    CurrentMass = Mass;
+                    CurrentSpeedY = SpeedY;
+                }
+            }
+        }
+    }
+    
+    public SpawnableObject LowerCollision
+    {
+        get { return lowerCollision; }
+        set
+        {
+            // Add collision
+            if (lowerCollision == null && value != null)
+            {
+                lowerCollision = value;
+
+                if (value.CurrentMass >= CurrentMass)
+                {
+                    CurrentMass = value.CurrentMass;
+                    CurrentSpeedY = value.CurrentSpeedY;
+                }
+
+                if (upperCollision != null)
+                {
+                    upperCollision.LowerCollision = this;
+                }
+            }
+
+            // Remove collision
+            if (lowerCollision != null && value == null)
+            {
+                lowerCollision = null;
+
+                if (upperCollision != null)
+                {
+                    if (upperCollision.CurrentMass >= CurrentMass)
+                    {
+                        CurrentMass = upperCollision.CurrentMass;
+                        CurrentSpeedY = upperCollision.CurrentSpeedY;
+                    }
+                    else
+                    {
+                        CurrentMass = Mass;
+                        CurrentSpeedY = SpeedY;
+                    }
+
+                    upperCollision.LowerCollision = this;
+                }
+                else
+                {
+                    CurrentMass = Mass;
+                    CurrentSpeedY = SpeedY;
+                }
+            }
+        }
+    }
 
     protected virtual void Initialize<T>(T config) where T : SpawnableObjectConfig
     {
@@ -33,8 +135,8 @@ public abstract class SpawnableObject : MonoBehaviour
         SpeedY = config.speedY;
         Mass = config.mass;
 
-        _currentSpeedY = SpeedY;
-        _currentMass = Mass;
+        CurrentSpeedY = SpeedY;
+        CurrentMass = Mass;
 
         Size = _boxCollider2D.bounds.size;
 
@@ -60,7 +162,7 @@ public abstract class SpawnableObject : MonoBehaviour
 
     private void Move()
     {
-        transform.Translate(Vector2.down * Time.deltaTime * _currentSpeedY);
+        transform.Translate(Vector2.down * Time.deltaTime * CurrentSpeedY);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -74,74 +176,19 @@ public abstract class SpawnableObject : MonoBehaviour
 
     private void HandleCollision(SpawnableObject other)
     {
-        Vector2 direction = other.transform.position - transform.position;
+        Vector2 direction = other.transform.position - transform.position;  // Collison direction calculation method is sus
         direction.Normalize();
 
         bool isUpperCollision = direction.y > 0;
 
         if (isUpperCollision)
         {
-            if (lowerCollisions.Count == 0 && !lowerCollisions.Contains(other))
-            {
-                lowerCollisions.Add(other);
-                UpdateCollisionState();
-            }
+            LowerCollision = other;
         }
         else
         {
-            if (upperCollisions.Count == 0 && !upperCollisions.Contains(other))
-            {
-                upperCollisions.Add(other);
-                UpdateCollisionState();
-            }
+            UpperCollision = other;
         }
-    }
-
-    private void UpdateCollisionState()
-    {
-        // Перерасчет масс и скоростей
-        // Собираем все связанные объекты
-        List<SpawnableObject> collisionChain = GetCollisionChain();
-
-        // Находим объект с наибольшей массой
-        SpawnableObject heaviestObject = collisionChain.OrderByDescending(o => o._currentMass).First();
-
-        // Обновляем массы и скорости
-        foreach (var obj in collisionChain)
-        {
-            obj._currentMass = heaviestObject._currentMass;
-            obj._currentSpeedY = heaviestObject._currentSpeedY;
-        }
-    }
-
-    private List<SpawnableObject> GetCollisionChain(List<SpawnableObject> visitedObjects = null)
-    {
-        if (visitedObjects == null)
-        {
-            visitedObjects = new List<SpawnableObject>();
-        }
-
-        // Skip this object, if there is a one in the list
-        if (visitedObjects.Contains(this))
-        {
-            return visitedObjects;
-        }
-
-        // If this object is not in the list yet, add it
-        visitedObjects.Add(this);
-
-        // Add linked objects recursively
-        foreach (var obj in upperCollisions)
-        {
-            obj.GetCollisionChain(visitedObjects);
-        }
-
-        foreach (var obj in lowerCollisions)
-        {
-            obj.GetCollisionChain(visitedObjects);
-        }
-
-        return visitedObjects;
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -153,17 +200,20 @@ public abstract class SpawnableObject : MonoBehaviour
         }
     }
 
-    private void HandleCollisionExit(SpawnableObject other)
+    private void HandleCollisionExit(SpawnableObject other)  // Probably, should combine with HandleCollision
     {
-        if (upperCollisions.Contains(other))
+        Vector2 direction = other.transform.position - transform.position;
+        direction.Normalize();
+
+        bool isUpperCollision = direction.y > 0;
+
+        if (isUpperCollision)
         {
-            upperCollisions.Remove(other);
-            UpdateCollisionState();
+            LowerCollision = null;
         }
-        else if (lowerCollisions.Contains(other))
+        else
         {
-            lowerCollisions.Remove(other);
-            UpdateCollisionState();
+            UpperCollision = null;
         }
     }
 
