@@ -5,8 +5,8 @@ public class SpawnManager : MonoBehaviour
 {
     public SpawnManager Instance { get; private set; }
 
-    [SerializeField] private TestPool testPool;
-    [SerializeField] private TestPool2 testPool2;
+    [SerializeField] TestObjectConfig testObjectConfig;
+    [SerializeField] TestObject2Config testObject2Confg;
 
     private void Awake()
     {
@@ -22,23 +22,31 @@ public class SpawnManager : MonoBehaviour
 
     private void Update()
     {
-        TestSpawn(testPool);
+        TestSpawn();
     }
 
-    private void TestSpawn<T>(T pool)
+    private void TestSpawn()
     {
         if (Input.GetKeyDown(KeyCode.H))
         {
-            TestObject obj = testPool.GetObject();
-            Vector2 positon = SpawnPositionManager.Instance.GetRandomPosition(obj);
-            obj.transform.position = positon;
+            if (SpawnableObjectManager.Instance == null)
+            {
+                Debug.Log("SpawnableObjectManager is NULL");
+            }
+            SpawnableObject obj = SpawnableObjectManager.Instance.Get(testObjectConfig.spawnableObjectName);
+            Vector2 position = SpawnPositionManager.Instance.GetRandomPosition(obj.Size);
         }
         
         if (Input.GetKeyDown(KeyCode.J))
         {
-            TestObject2 obj = testPool2.GetObject();
-            Vector2 positon = SpawnPositionManager.Instance.GetRandomPosition(obj);
-            obj.transform.position = positon;
+            SpawnableObject obj = SpawnableObjectManager.Instance.Get(testObjectConfig.spawnableObjectName);
+            Vector2 position = SpawnPositionManager.Instance.GetRandomPosition(obj.Size);
         }
     }
+}
+
+[CreateAssetMenu(fileName = "SpawnManager Config", menuName = "Configs/Spawn System/SpawnManager")]
+public class SpawnManagerConfig : ScriptableObject
+{
+    public int spawnAreaHeight;
 }

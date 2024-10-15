@@ -3,18 +3,17 @@ using UnityEngine;
 
 public class ProjectilePool : MonoBehaviour
 {
-    public string ObjectName { get; private set; }
-    private GameObject _prefab;
+    private ProjectileConfig _projectileConfig;
     private int _expansionSize;
 
     private Queue<Projectile> _pool = new Queue<Projectile>();
 
-    public void Initialize(GameObject prefab, ProjectilePoolConfig config)
+    public void Initialize(ProjectileConfig config)
     {
-        _prefab = prefab;
-        _expansionSize = config.expansionSize;
+        _projectileConfig = config;
+        _expansionSize = config.poolExpSize;
 
-        Expand(config.initialSize);
+        Expand(config.poolInitSize);
     }
 
     private Projectile Expand(int toAdd)
@@ -23,9 +22,7 @@ public class ProjectilePool : MonoBehaviour
 
         for (int i = 0; i < toAdd; i++)
         {
-            GameObject obj = GameObject.Instantiate(_prefab, transform);
-            Projectile comp = obj.GetComponent<Projectile>();
-            Unclassified.NullCheckComponent(comp);
+            Projectile comp = InitializeObject(_projectileConfig);
 
             _pool.Enqueue(comp);
             if (i == toAdd - 1)
@@ -34,9 +31,18 @@ public class ProjectilePool : MonoBehaviour
             }
         }
 
-        ObjectName = tmp.Name;
         return tmp;
     }
+
+    private Projectile InitializeObject(ProjectileConfig config)
+    {
+        GameObject obj = Instantiate(config.prefab, transform);
+        Projectile comp = obj.GetComponent<Projectile>();
+        Unclassified.NullCheckComponent(comp);
+        comp.Initialize(config);
+
+        return comp;
+    } 
 
     public Projectile Get()
     {
@@ -55,16 +61,9 @@ public class ProjectilePool : MonoBehaviour
         return comp;
     }
 
-    public void ReturnProjectile(Projectile comp)
+    public void Return(Projectile comp)
     {
         comp.Deactivate();
         _pool.Enqueue(comp);
     }
-}
-
-[CreateAssetMenu(fileName = "ProjectilePool Config", menuName = "Configs/Projectiles/ProjectilePool")]
-public class ProjectilePoolConfig : ScriptableObject
-{
-    public int initialSize;
-    public int expansionSize;
 }

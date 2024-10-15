@@ -2,7 +2,6 @@ using UnityEngine;
 
 public abstract class Projectile : MonoBehaviour
 {
-
     public string Name { get; protected set; }
     public float Speed { get; protected set; }
     public int Damage { get; protected set; }
@@ -11,7 +10,7 @@ public abstract class Projectile : MonoBehaviour
 
     private float _topBoundary;
 
-    protected virtual void Initialize<T>(T config) where T : ProjectileConfig
+    public virtual void Initialize(ProjectileConfig config)
     {
         _boxCollider2D = GetComponent<BoxCollider2D>();
         Unclassified.NullCheckComponent(_boxCollider2D);
@@ -50,19 +49,23 @@ public abstract class Projectile : MonoBehaviour
 
         if (position.y > _topBoundary + _boxCollider2D.bounds.size.y / 2)
         {
-            ProjectilePoolManager.Instance.DestroyProjectile(Name, this);
+            ProjectileManager.Instance.DestroyProjectile(Name, this);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        ProjectilePoolManager.Instance.DestroyProjectile(Name, this);
+        ProjectileManager.Instance.DestroyProjectile(Name, this);
     }
 }
 
+
 public abstract class ProjectileConfig : ScriptableObject
 {
+    public GameObject prefab;
     public string projectileName;
     public float speed;
     public int damage;
+    public int poolInitSize;
+    public int poolExpSize;
 }

@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
             _fireLimit = Time.time + _fireRate;
 
             Vector2 projectilePos = new Vector2(transform.position.x + _projectileOffsetX, transform.position.y + _projectileOffsetY);
-            ProjectilePoolManager.Instance.SpawnProjectile(_novaShotConfig.projectileName, projectilePos);
+            ProjectileManager.Instance.SpawnProjectile(_novaShotConfig.projectileName, projectilePos);
 
             AudioSourcePool.Instance.PlayAudio(GlobalValuesManager.Instance.projectileAudioName, transform.position);
         }

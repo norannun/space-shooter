@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: TestPool Config
-  m_EditorClassIdentifier: Assembly-CSharp::TestPoolConfig
-  prefab: {fileID: 1786350502832277584, guid: ab4fe66abfb9680469bac14a75d793be, type: 3}
-  initialSize: 5
-  expansionSize: 15
+  m_Name: SpawnableObjectManager Config
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnableObjectManagerConfig
+  configs:
+  - {fileID: 11400000, guid: c64dfc912ce10774f8536ad6bf3dae7e, type: 2}
+  - {fileID: 11400000, guid: 90e924b6b34b29742b963ba5bf0cf16e, type: 2}

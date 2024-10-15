@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectilePoolManager : MonoBehaviour
+public class ProjectileManager : MonoBehaviour
 {
-    public static ProjectilePoolManager Instance { get; private set; }
+    public static ProjectileManager Instance { get; private set; }
 
-
-    [SerializeField] private ProjectilePoolManagerConfig poolManagerConfig;
-    [SerializeField] private ProjectilePoolConfig poolConfig;
+    [SerializeField] private ProjectilePoolManagerConfig _projectileConfigs;
 
     private Dictionary<string, ProjectilePool> pools;
 
@@ -32,15 +30,15 @@ public class ProjectilePoolManager : MonoBehaviour
     {
         pools = new Dictionary<string, ProjectilePool>();
 
-        foreach (GameObject obj in poolManagerConfig.prefabs)
+        foreach (ProjectileConfig config in _projectileConfigs.configs)
         {
             GameObject pool = new();
             ProjectilePool comp = pool.AddComponent<ProjectilePool>();
-            comp.Initialize(obj, poolConfig);
+            comp.Initialize(config);
             pool.transform.parent = transform;
-            pool.name = $"{comp.ObjectName} Pool";
+            pool.name = $"{config.projectileName} Pool";
 
-            pools.Add(comp.ObjectName, comp);
+            pools.Add(config.projectileName, comp);
         }
     }
 
@@ -54,12 +52,12 @@ public class ProjectilePoolManager : MonoBehaviour
 
     public void DestroyProjectile(string name, Projectile comp)
     {
-        pools[name].ReturnProjectile(comp);
+        pools[name].Return(comp);
     }
 }
 
-[CreateAssetMenu(fileName = "ProjectilePoolManager Config", menuName = "Configs/Projectiles/ProjectilePoolManager")]
+[CreateAssetMenu(fileName = "ProjectileManager Config", menuName = "Configs/Projectiles/ProjectileManager")]
 public class ProjectilePoolManagerConfig : ScriptableObject
 {
-    public GameObject[] prefabs;
+    public ProjectileConfig[] configs;
 }

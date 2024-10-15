@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: ProjectilePoolManager Config
   m_EditorClassIdentifier: Assembly-CSharp::ProjectilePoolManagerConfig
-  prefabs:
-  - {fileID: 5548956018157269868, guid: 840ec6e5f50eaff49b1b847dc808fe37, type: 3}
+  configs:
+  - {fileID: 11400000, guid: 920b5edb62368d1469016dc98f058d57, type: 2}

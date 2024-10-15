@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: NovaShot Config
   m_EditorClassIdentifier: Assembly-CSharp::NovaShotConfig
+  prefab: {fileID: 5548956018157269868, guid: 840ec6e5f50eaff49b1b847dc808fe37, type: 3}
   projectileName: nova_shot
   speed: 10
   damage: 200
+  poolInitSize: 5
+  poolExpSize: 20
