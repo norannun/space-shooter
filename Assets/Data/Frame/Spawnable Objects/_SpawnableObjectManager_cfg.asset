@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: ProjectilePoolManager Config
-  m_EditorClassIdentifier: Assembly-CSharp::ProjectilePoolManagerConfig
+  m_Name: _SpawnableObjectManager_cfg
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectManagerConfig
   configs:
-  - {fileID: 11400000, guid: 920b5edb62368d1469016dc98f058d57, type: 2}
+  - {fileID: 11400000, guid: c64dfc912ce10774f8536ad6bf3dae7e, type: 2}
+  - {fileID: 11400000, guid: 90e924b6b34b29742b963ba5bf0cf16e, type: 2}

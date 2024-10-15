@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: TestObject2 Config
   m_EditorClassIdentifier: Assembly-CSharp::TestObject2Config
-  spawnableObjectName: test_2
+  prefab: {fileID: 5735090695388529358, guid: 45bb992061e45ca4888fb8051183d42f, type: 3}
+  objectName: Test 2
+  poolInitSize: 10
+  poolExpSize: 10
   health: 0
   speed: 0
   mass: 1
@@ -21,6 +24,3 @@ MonoBehaviour:
   projectileOffsetX: 0
   collisionDamage: 67
   transparencyModifier: 0
-  prefab: {fileID: 5735090695388529358, guid: 45bb992061e45ca4888fb8051183d42f, type: 3}
-  poolInitSize: 0
-  poolExpSize: 0

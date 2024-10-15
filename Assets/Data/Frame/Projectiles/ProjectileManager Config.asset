@@ -10,11 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: NovaShot Config
-  m_EditorClassIdentifier: Assembly-CSharp::NovaShotConfig
-  prefab: {fileID: 5548956018157269868, guid: 840ec6e5f50eaff49b1b847dc808fe37, type: 3}
-  projectileName: nova_shot
-  speed: 10
-  damage: 200
-  poolInitSize: 5
-  poolExpSize: 20
+  m_Name: ProjectileManager Config
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectManagerConfig
+  configs:
+  - {fileID: 11400000, guid: 920b5edb62368d1469016dc98f058d57, type: 2}

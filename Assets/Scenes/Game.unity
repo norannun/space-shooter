@@ -1090,10 +1090,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 633717422}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 537c5907302ed344cb379bcce62e62bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 762ea23a68ef89d4e94d1a630b852d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnableObjectConfigs: {fileID: 11400000, guid: 9d6fc723a6d7e1b49b8e2eead8e20e59, type: 2}
+  _configs: {fileID: 11400000, guid: 8b22f092fcf15bb4f979d2065309b26e, type: 2}
 --- !u!1 &649011147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1411,7 +1411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testObjectConfig: {fileID: 11400000, guid: c64dfc912ce10774f8536ad6bf3dae7e, type: 2}
-  testObject2Confg: {fileID: 11400000, guid: 90e924b6b34b29742b963ba5bf0cf16e, type: 2}
+  testObject2Config: {fileID: 11400000, guid: 90e924b6b34b29742b963ba5bf0cf16e, type: 2}
 --- !u!1 &749684648
 GameObject:
   m_ObjectHideFlags: 0
@@ -3259,10 +3259,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2138406868}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2274572557548d4b8c6253d93979575, type: 3}
+  m_Script: {fileID: 11500000, guid: 39ba453e6035cf6458a03d20106bd027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectileConfigs: {fileID: 11400000, guid: 7b7ce7e17ee72fe4bad464eb729b850e, type: 2}
+  _configs: {fileID: 11400000, guid: 3408eb85019c8cd43b7f156dd6e6cb42, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

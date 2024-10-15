@@ -1,28 +1,31 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectilePool : MonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
-    private ProjectileConfig _projectileConfig;
+    private PoolableObjectConfig _config;
     private int _expansionSize;
 
-    private Queue<Projectile> _pool = new Queue<Projectile>();
+    private Queue<PoolableObject> _pool;
 
-    public void Initialize(ProjectileConfig config)
+    public void Initialize(PoolableObjectConfig config)
     {
-        _projectileConfig = config;
+        _pool = new Queue<PoolableObject>();
+
+        _config = config;
         _expansionSize = config.poolExpSize;
 
         Expand(config.poolInitSize);
     }
 
-    private Projectile Expand(int toAdd)
+    private PoolableObject Expand(int toAdd)
     {
-        Projectile tmp = null;  // Used if there is no objects left
+        PoolableObject tmp = null;  // Used if there is no objects left
 
         for (int i = 0; i < toAdd; i++)
         {
-            Projectile comp = InitializeObject(_projectileConfig);
+            PoolableObject comp = InitializeObject(_config);
 
             _pool.Enqueue(comp);
             if (i == toAdd - 1)
@@ -34,19 +37,19 @@ public class ProjectilePool : MonoBehaviour
         return tmp;
     }
 
-    private Projectile InitializeObject(ProjectileConfig config)
+    private PoolableObject InitializeObject(PoolableObjectConfig config)
     {
         GameObject obj = Instantiate(config.prefab, transform);
-        Projectile comp = obj.GetComponent<Projectile>();
+        PoolableObject comp = obj.GetComponent<PoolableObject>();
         Unclassified.NullCheckComponent(comp);
         comp.Initialize(config);
 
         return comp;
-    } 
+    }
 
-    public Projectile Get()
+    public PoolableObject Get()
     {
-        Projectile comp;
+        PoolableObject comp;
 
         if (_pool.Count > 0)
         {
@@ -61,7 +64,7 @@ public class ProjectilePool : MonoBehaviour
         return comp;
     }
 
-    public void Return(Projectile comp)
+    public void Return(PoolableObject comp)
     {
         comp.Deactivate();
         _pool.Enqueue(comp);

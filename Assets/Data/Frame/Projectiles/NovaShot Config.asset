@@ -10,8 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: SpawnableObjectManager Config
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnableObjectManagerConfig
-  configs:
-  - {fileID: 11400000, guid: c64dfc912ce10774f8536ad6bf3dae7e, type: 2}
-  - {fileID: 11400000, guid: 90e924b6b34b29742b963ba5bf0cf16e, type: 2}
+  m_Name: NovaShot Config
+  m_EditorClassIdentifier: Assembly-CSharp::NovaShotConfig
+  prefab: {fileID: 5548956018157269868, guid: 840ec6e5f50eaff49b1b847dc808fe37, type: 3}
+  objectName: Nova Shot
+  poolInitSize: 5
+  poolExpSize: 20
+  speed: 10
+  damage: 200

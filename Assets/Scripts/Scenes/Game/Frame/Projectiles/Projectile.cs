@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public abstract class Projectile : MonoBehaviour
+public abstract class Projectile : PoolableObject
 {
-    public string Name { get; protected set; }
     public float Speed { get; protected set; }
     public int Damage { get; protected set; }
 
@@ -10,35 +9,37 @@ public abstract class Projectile : MonoBehaviour
 
     private float _topBoundary;
 
-    public virtual void Initialize(ProjectileConfig config)
+    // PoolableObject implementation
+    public override void Initialize(PoolableObjectConfig config)
     {
         _boxCollider2D = GetComponent<BoxCollider2D>();
         Unclassified.NullCheckComponent(_boxCollider2D);
 
-        Name = config.projectileName;
-        Speed = config.speed;
-        Damage = config.damage;
+        ProjectileConfig projectileConfig = config as ProjectileConfig;
+        Speed = projectileConfig.speed;
+        Damage = projectileConfig.damage;
 
         _topBoundary = GlobalValuesManager.Instance.TopBoundary;
 
-        Deactivate();
+        base.Initialize(config);
     }
 
-    protected void Update()
-    {
-        Move();
-    }
-
-    public void Activate()
+    public override void Activate()
     {
         gameObject.SetActive(true);
         _boxCollider2D.enabled = true;
     }
 
-    public void Deactivate()
+    public override void Deactivate()
     {
         _boxCollider2D.enabled = false;
         gameObject.SetActive(false);
+    }
+
+    // Projectile behaviour
+    protected void Update()
+    {
+        Move();
     }
 
     private void Move()
@@ -49,23 +50,19 @@ public abstract class Projectile : MonoBehaviour
 
         if (position.y > _topBoundary + _boxCollider2D.bounds.size.y / 2)
         {
-            ProjectileManager.Instance.DestroyProjectile(Name, this);
+            ProjectileManager.Instance.ReturnObject(Name, this);
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        ProjectileManager.Instance.DestroyProjectile(Name, this);
+        ProjectileManager.Instance.ReturnObject(Name, this);
     }
 }
 
 
-public abstract class ProjectileConfig : ScriptableObject
+public abstract class ProjectileConfig : PoolableObjectConfig
 {
-    public GameObject prefab;
-    public string projectileName;
     public float speed;
     public int damage;
-    public int poolInitSize;
-    public int poolExpSize;
 }

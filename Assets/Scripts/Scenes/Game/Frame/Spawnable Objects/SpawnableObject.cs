@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public abstract class SpawnableObject : MonoBehaviour
+public abstract class SpawnableObject : PoolableObject
 {
     // Configuration
-    public static string Name { get; protected set; }
     public int Health { get; protected set; }
     public float SpeedY { get; protected set; }
     public float Mass { get; protected set; }
@@ -21,7 +20,7 @@ public abstract class SpawnableObject : MonoBehaviour
 
     private int collisions;
 
-    public virtual void Initialize(SpawnableObjectConfig config)
+    public override void Initialize(PoolableObjectConfig config)
     {
         _boxCollider2D = GetComponent<BoxCollider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -29,23 +28,23 @@ public abstract class SpawnableObject : MonoBehaviour
         Unclassified.NullCheckComponent(_spriteRenderer);
         _boxCollider2D.isTrigger = true;
 
-        Name = config.spawnableObjectName;
-        Health = config.health;
-        SpeedY = config.speed;
-        Mass = config.mass;
-        FireRate = config.fireRate;
-        ProjectileOffsetX = config.projectileOffsetX;
-        ProjectileOffsetY = config.projectileOffsetY;
-        CollisionDamage = config.collisionDamage;
-        TransparencyModifier = config.transparencyModifier;
+        SpawnableObjectConfig spawnableObjectConfig = config as SpawnableObjectConfig;
+        Health = spawnableObjectConfig.health;
+        SpeedY = spawnableObjectConfig.speed;
+        Mass = spawnableObjectConfig.mass;
+        FireRate = spawnableObjectConfig.fireRate;
+        ProjectileOffsetX = spawnableObjectConfig.projectileOffsetX;
+        ProjectileOffsetY = spawnableObjectConfig.projectileOffsetY;
+        CollisionDamage = spawnableObjectConfig.collisionDamage;
+        TransparencyModifier = spawnableObjectConfig.transparencyModifier;
 
         Size = _boxCollider2D.bounds.size;
         collisions = 0;
 
-        Deactivate();
+        base.Initialize(config);
     }
 
-    public void Activate()
+    public override void Activate()
     {
         gameObject.SetActive(true);
         collisions = 0;
@@ -53,7 +52,7 @@ public abstract class SpawnableObject : MonoBehaviour
         ModifyTransparency(1.0f);
     }
 
-    public void Deactivate()
+    public override void Deactivate()
     {
         _boxCollider2D.enabled = false;
         gameObject.SetActive(false);
@@ -69,13 +68,14 @@ public abstract class SpawnableObject : MonoBehaviour
         transform.Translate(Vector2.down * Time.deltaTime * SpeedY);
     }
 
+    // Collisions
     private void ReceiveDamage(int damage)
     {
         Health -= damage;
 
         if (Health < 1)
         {
-            SpawnableObjectManager.Instance.Return(Name, this);
+            SpawnableObjectManager.Instance.ReturnObject(Name, this);
         }
     }
 
@@ -86,7 +86,6 @@ public abstract class SpawnableObject : MonoBehaviour
         color.a = value;
     }
 
-    // Collisions
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Spawnable Object")
@@ -107,8 +106,9 @@ public abstract class SpawnableObject : MonoBehaviour
         }
         if (other.tag == "Projectile")
         {
-            Projectile projectile = other.GetComponent<Projectile>();
-            Unclassified.NullCheckComponent(projectile);
+            PoolableObject obj = other.GetComponent<PoolableObject>();
+            Unclassified.NullCheckComponent(obj);
+            Projectile projectile = obj as Projectile;
 
             ReceiveDamage(projectile.Damage);
         }
@@ -130,9 +130,8 @@ public abstract class SpawnableObject : MonoBehaviour
 }
 
 
-public abstract class SpawnableObjectConfig : ScriptableObject
+public abstract class SpawnableObjectConfig : PoolableObjectConfig
 {
-    public string spawnableObjectName;
     public int health;
     public float speed;
     public int mass;
@@ -141,7 +140,4 @@ public abstract class SpawnableObjectConfig : ScriptableObject
     public int projectileOffsetX;
     public int collisionDamage;
     public float transparencyModifier;
-    public GameObject prefab;
-    public int poolInitSize;
-    public int poolExpSize;
 }

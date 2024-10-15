@@ -3,7 +3,12 @@ using UnityEngine;
 
 public class TestObject : SpawnableObject
 {
-    
+    public override void Initialize(PoolableObjectConfig config)
+    {
+        TestObjectConfig testObjectConfig = config as TestObjectConfig;
+
+        base.Initialize(config);
+    }
 }
 
 

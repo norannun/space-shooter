@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
     public SpawnManager Instance { get; private set; }
 
     [SerializeField] TestObjectConfig testObjectConfig;
-    [SerializeField] TestObject2Config testObject2Confg;
+    [SerializeField] TestObject2Config testObject2Config;
 
     private void Awake()
     {
@@ -29,18 +29,16 @@ public class SpawnManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.H))
         {
-            if (SpawnableObjectManager.Instance == null)
-            {
-                Debug.Log("SpawnableObjectManager is NULL");
-            }
-            SpawnableObject obj = SpawnableObjectManager.Instance.Get(testObjectConfig.spawnableObjectName);
-            Vector2 position = SpawnPositionManager.Instance.GetRandomPosition(obj.Size);
+            PoolableObject obj = SpawnableObjectManager.Instance.GetObject(testObjectConfig.objectName);
+            SpawnableObject newObj = obj as SpawnableObject;
+            newObj.transform.position = SpawnPositionManager.Instance.GetRandomPosition(newObj.Size);
         }
         
         if (Input.GetKeyDown(KeyCode.J))
         {
-            SpawnableObject obj = SpawnableObjectManager.Instance.Get(testObjectConfig.spawnableObjectName);
-            Vector2 position = SpawnPositionManager.Instance.GetRandomPosition(obj.Size);
+            PoolableObject obj = SpawnableObjectManager.Instance.GetObject(testObject2Config.objectName);
+            SpawnableObject newObj = obj as SpawnableObject;
+            Vector2 position = SpawnPositionManager.Instance.GetRandomPosition(newObj.Size);
         }
     }
 }
